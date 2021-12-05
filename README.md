@@ -13,6 +13,10 @@ Phase-based distance tracking
 - [SWproject](#swproject)
   - [Environment](#environment)
   - [Usage](#usage)
+  - [Principle](#principle)
+  - [Difficulties and Solutions](#difficulties-and-solutions)
+
+
 
 
 ## Environment
@@ -41,3 +45,20 @@ SWprject  has the following dependencies:
 0 在树莓派上安装所需的依赖；运行query_device.py，列出树莓派上所有的音频设备接口，修改play.py中的utput_device_index和getdis.py中的input_device_index。
 
 1 在树莓派终端中依次运行 play.py 和 getdis.py。
+
+## Principle 
+Phase-based distance tracking
+Refer to Device-Free Gesture Tracking Using Acoustic Signals.pdf
+
+![principle](document/principle.jpg)
+![keyprocessing](document/keyprocessing.jpg)
+
+## Difficulties and Solutions
+||Difficulties|Solutions|
+|-------|-------------|----------|
+|识别距离|测距范围非常可惜|换一套好的播收音设备|
+|处理速度|计算距离算法效率上需要改良|累计距离后剪裁需要处理的数据、换个处理器|
+|实时性|判断是否有人的实时性和led闪灭的实时性|剪裁数据、改良算法、改用C实现|
+|内存占用|产生了较多的垃圾数据|数据量达到一定阈值后裁剪，计算的距离从上次累计结果的开始累加|
+|有效时间|有效时间较短|改善处理速度、实时性、内存占用问题后有效时间就能显著提高了。目前主要是由于每次都是从头计算整个音频数据，所以音频的数据量较多时计算量对于树莓派太大，需要改良计算距离的算法或者剪裁数据|
+
